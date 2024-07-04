@@ -4,7 +4,7 @@ This project is a Chladni Frequency Visualizer built with plain HTML/JavaScript.
 
 _Note: This is purely for entertainment and visualization purposes. It is not based on scientific research or intended for scientific use._
 
-![Harmonic Resonance DNA Visualizer](https://i.ibb.co/Sn8Y76S/screen-recording.gif)
+![Harmonic Resonance DNA Visualizer](https://github.com/aligeramy/chladni-pattern-visualizer/blob/main/preview.gif)
 
 ## Description
 
