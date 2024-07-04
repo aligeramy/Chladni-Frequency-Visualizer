@@ -4,7 +4,7 @@ A Chladni frequency visualizer using HTML5 Canvas and JavaScript that shows the 
 
 _Note: This is not scientific. Its just for relative visualization._
 
-![Harmonic Resonance DNA Visualizer](https://github.com/aligeramy/chladni-pattern-visualizer/main/preview.gif)
+![Harmonic Resonance DNA Visualizer](https://github.com/aligeramy/chladni-pattern-visualizer/blob/main/preview.gif)
 
 ## Description
 
