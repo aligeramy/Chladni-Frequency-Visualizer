@@ -11,42 +11,54 @@
 <body>
     <div class="container">
         <h1>Chladni Pattern Visualizer</h1>
+        <div class="hr-flex">
+            <button id="playButton" class="main-button">Play Sound</button>
+        </div>
         <div class="visualization-container">
             <canvas id="chladniCanvas" width="400" height="400"></canvas>
             <canvas id="dnaCanvas" width="400" height="400"></canvas>
         </div>
+        
+        
         <div class="controls">
-            <div class="control-group">
+            <div class="control-group f1">
                 <label for="frequencySlider">Frequency</label>
                 <input type="range" id="frequencySlider" min="0" max="1000" step="0.1" value="312">
                 <div id="frequencyValue" class="value-display">312 Hz</div>
             </div>
-         
-            <div class="control-group">
+            
+
+            <div class="control-group f1">
                 <label for="amplitudeSlider">Amplitude</label>
                 <input type="range" id="amplitudeSlider" min="0" max="1" step="0.001" value="0.500">
                 <div id="amplitudeValue" class="value-display">0.500</div>
             </div>
 
-            <div class="control-group">
+            <div class="control-group f1">
                 <label for="dampingSlider">Damping</label>
                 <input type="range" id="dampingSlider" min="0" max="2" step="0.001" value="0.000">
                 <div id="dampingValue" class="value-display">0.000</div>
             </div>
-
-            <div class="control-group">
+            
+            <div class="f0"></div>
+            <div class="control-group f2">
                 <label for="dnaLengthSlider">DNA Length</label>
-                <input type="range" id="dnaLengthSlider" min="50" max="350" value="200">
-                <div id="dnaLengthValue" class="value-display">200</div>
+                <input type="range" id="dnaLengthSlider" min="25" max="175" value="100">
+                <div id="dnaLengthValue" class="value-display">100</div>
             </div>
 
-            <div class="control-group">
+            <div class="control-group f2">
                 <label for="dnaHeigthSlider">DNA Height</label>
-                <input type="range" id="dnaHeigthSlider" min="0" max="200" value="50">
-                <div id="dnaHeightValue" class="value-display">50</div>
+                <input type="range" id="dnaHeigthSlider" min="0" max="200" value="30">
+                <div id="dnaHeightValue" class="value-display">30</div>
             </div>
         </div>
-        <button id="playButton" class="main-button">Play Sound</button>
+        <div class="check-flex">
+            <label><input type="checkbox" id="invertCheckbox"> Invert Pattern Colors</label>
+            <label><input type="checkbox" id="hideDnaCheckbox"> Hide DNA Backbone</label>
+        </div>
+     
+        
         <div class="preset-buttons">
             <button class="preset-button" data-freq="174">
                 <span class="frequency">174 Hz</span>
@@ -89,6 +101,7 @@
                 <span class="description">Awakening</span>
             </button>
         </div>
+      
     </div>
     <script src="script.js"></script>
 </body>

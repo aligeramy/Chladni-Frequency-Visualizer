@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
     --primary-color: #0071e3;
@@ -9,7 +9,7 @@
 }
 
 body {
-    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
     background-color: var(--background-color);
     margin: 0;
     padding: 20px;
@@ -133,7 +133,8 @@ button:active {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 15px;
-    margin-top: 30px;
+    margin-top: 10px;
+    margin-bottom: 15px;
 }
 
 .preset-button {
@@ -169,8 +170,36 @@ button:active {
 
 .main-button {
     display: block;
-    margin: 30px auto;
+    margin: 10px 0 20px 0;
     font-size: 20px;
     padding: 15px 40px;
     font-weight: 500;
+}
+
+
+.hr-flex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.check-flex {
+    display: flex;
+    gap: 25px;
+    justify-content: space-around;
+    margin-top: 35px;
+}
+
+.f0 {
+    flex: 1;
+
+}
+
+.f1 {
+flex: 2;
+}
+
+.f2 {
+    flex: 3;
 }

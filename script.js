@@ -1,22 +1,28 @@
 // Design variables
 let dnaHeight = 30;
-let dnaLength = 150; // Length of DNA segments
+let dnaLength = 100; // Length of DNA segments
 
-let colorYing = 'rgba(255, 182, 193, 1)';
+let colorYin = 'rgba(255, 182, 193, 1)';
 let colorYang = 'rgba(137, 207, 255, 1)';
 
 let waveColor = 'rgba(0, 0, 255, 0.2)';
 let intersectionColor = 'rgba(255, 0, 0, 1)';
 
-let leftBackboneWidth = 4;
-let rightBackboneWidth = 4;
+let backBoneWidth = 3;
 let baseWidth = 2;
 
-let leftBackboneColor = colorYing;
-let baseLeftColor = colorYing;
+
+let leftBackboneWidth = backBoneWidth;
+let rightBackboneWidth = backBoneWidth;
+
+let leftBackboneColor = colorYin;
+let baseLeftColor = colorYin;
 
 let rightBackboneColor = colorYang;
 let baseRightColor = colorYang;
+
+let invertColors = false;
+let hideDnaBackbones = false;
 
 // Get canvas and context
 const chladniCanvas = document.getElementById('chladniCanvas');
@@ -30,6 +36,8 @@ const dnaHeigthSlider = document.getElementById('dnaHeigthSlider');
 const amplitudeSlider = document.getElementById('amplitudeSlider');
 const dampingSlider = document.getElementById('dampingSlider');
 const dnaLengthSlider = document.getElementById('dnaLengthSlider');
+const invertCheckbox = document.getElementById('invertCheckbox');
+const hideDnaCheckbox = document.getElementById('hideDnaCheckbox');
 const playButton = document.getElementById('playButton');
 const presetButtons = document.querySelectorAll('.preset-button');
 
@@ -81,7 +89,16 @@ function updateChladniPattern() {
     const damping = parseFloat(dampingSlider.value);
 
     chladniCtx.clearRect(0, 0, chladniCanvas.width, chladniCanvas.height);
-    chladniCtx.fillStyle = '#1d1d1f';
+
+    if (invertColors) {
+        chladniCtx.fillStyle = '#000000';
+        chladniCtx.fillRect(0, 0, chladniCanvas.width, chladniCanvas.height);
+    } else {
+        chladniCtx.fillStyle = '#ffffff';
+        chladniCtx.fillRect(0, 0, chladniCanvas.width, chladniCanvas.height);
+    }
+
+    chladniCtx.fillStyle = invertColors ? '#ffffff' : '#1d1d1f';
 
     for (let x = 0; x < chladniCanvas.width; x += 2) {
         for (let y = 0; y < chladniCanvas.height; y += 2) {
@@ -92,6 +109,7 @@ function updateChladniPattern() {
             const dampedValue = value * Math.exp(-damping * (Math.abs(normX) + Math.abs(normY)));
 
             if (Math.abs(dampedValue) < 0.01) {
+                chladniCtx.fillStyle = invertColors ? '#ffffff' : '#000000';
                 chladniCtx.fillRect(x, y, 2, 2);
             }
         }
@@ -103,37 +121,39 @@ function drawDNA() {
     const amplitude = parseFloat(amplitudeSlider.value);
     const damping = parseFloat(dampingSlider.value);
 
-    const segmentLength = dnaLength; // Use the DNA length from the slider
+    const segmentLength = dnaLength * 2; // Use the DNA length from the slider
 
     dnaCtx.clearRect(0, 0, dnaCanvas.width, dnaCanvas.height);
 
-    // Draw left DNA backbone
-    dnaCtx.beginPath();
-    dnaCtx.lineWidth = leftBackboneWidth;
-    dnaCtx.strokeStyle = leftBackboneColor;
-    for (let x = 0; x < dnaCanvas.width; x += 5) {
-        const y = dnaCanvas.height / 2 + Math.sin(x * (2 * Math.PI / segmentLength)) * dnaHeight;
-        if (x === 0) {
-            dnaCtx.moveTo(x, y);
-        } else {
-            dnaCtx.lineTo(x, y);
+    if (!hideDnaBackbones) {
+        // Draw left DNA backbone
+        dnaCtx.beginPath();
+        dnaCtx.lineWidth = leftBackboneWidth;
+        dnaCtx.strokeStyle = leftBackboneColor;
+        for (let x = 0; x < dnaCanvas.width; x += 5) {
+            const y = dnaCanvas.height / 2 + Math.sin(x * (2 * Math.PI / segmentLength)) * dnaHeight;
+            if (x === 0) {
+                dnaCtx.moveTo(x, y);
+            } else {
+                dnaCtx.lineTo(x, y);
+            }
         }
-    }
-    dnaCtx.stroke();
+        dnaCtx.stroke();
 
-    // Draw right DNA backbone
-    dnaCtx.beginPath();
-    dnaCtx.lineWidth = rightBackboneWidth;
-    dnaCtx.strokeStyle = rightBackboneColor;
-    for (let x = 0; x < dnaCanvas.width; x += 5) {
-        const y = dnaCanvas.height / 2 + Math.sin(x * (2 * Math.PI / segmentLength) + Math.PI) * dnaHeight;
-        if (x === 0) {
-            dnaCtx.moveTo(x, y);
-        } else {
-            dnaCtx.lineTo(x, y);
+        // Draw right DNA backbone
+        dnaCtx.beginPath();
+        dnaCtx.lineWidth = rightBackboneWidth;
+        dnaCtx.strokeStyle = rightBackboneColor;
+        for (let x = 0; x < dnaCanvas.width; x += 5) {
+            const y = dnaCanvas.height / 2 + Math.sin(x * (2 * Math.PI / segmentLength) + Math.PI) * dnaHeight;
+            if (x === 0) {
+                dnaCtx.moveTo(x, y);
+            } else {
+                dnaCtx.lineTo(x, y);
+            }
         }
+        dnaCtx.stroke();
     }
-    dnaCtx.stroke();
 
     // Draw DNA bases
     for (let x = 0; x < dnaCanvas.width; x += 5) {
@@ -209,6 +229,9 @@ function enableEditing(element, slider, unit = '') {
             if (slider === dnaHeigthSlider) {
                 dnaHeight = value; // Update dnaHeight if dnaHeigthSlider is changed
             }
+            if (slider === dnaLengthSlider) {
+                dnaLength = value; // Update dnaLength if dnaLengthSlider is changed
+            }
             element.textContent = value + unit;
             input.replaceWith(element);
             updateVisualizations();
@@ -266,6 +289,16 @@ dampingSlider.addEventListener('input', () => {
 dnaLengthSlider.addEventListener('input', () => {
     dnaLength = parseFloat(dnaLengthSlider.value);
     dnaLengthValue.textContent = dnaLength.toFixed(0);
+    updateVisualizations();
+});
+
+invertCheckbox.addEventListener('change', () => {
+    invertColors = invertCheckbox.checked;
+    updateVisualizations();
+});
+
+hideDnaCheckbox.addEventListener('change', () => {
+    hideDnaBackbones = hideDnaCheckbox.checked;
     updateVisualizations();
 });
 
