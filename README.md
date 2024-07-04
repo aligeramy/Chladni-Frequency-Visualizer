@@ -1,7 +1,7 @@
-# Harmonic Resonance DNA Visualizer
+# Chladni Frequency Visualizer
 
 A Chladni frequency visualizer using HTML5 Canvas and JavaScript that shows the effect of frequencies on DNA bases.
-
+_Note: This is not scientific. Its just for relative visualization._
 ## Description
 
 This project visualizes harmonic resonance patterns, known as Chladni patterns, and their (relative) effects on DNA bases. By adjusting the frequency, DNA height, amplitude, and damping, users can explore how different sound frequencies influence the activation of DNA bases based on their wavelength.
