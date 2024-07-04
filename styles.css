@@ -148,10 +148,11 @@ button:active {
     align-items: center;
     justify-content: center;
     text-align: center;
+    transition: background 300ms ease, border 600ms ease;
 }
 
 .preset-button:hover, .preset-button.active {
-    background-color: #f0f0f0;
+    background-color: #f1f5f9;
     border-color: var(--primary-color);
 }
 

@@ -22,6 +22,8 @@ let oscillator;
 let gainNode;
 let isPlaying = false;
 
+const presetFrequencies = Array.from(presetButtons).map(button => parseFloat(button.getAttribute('data-freq')));
+
 function initAudio() {
     audioContext = new (window.AudioContext || window.webkitAudioContext)();
     oscillator = audioContext.createOscillator();
@@ -123,6 +125,7 @@ function updateFrequency(freq) {
     frequencyValue.textContent = freq + ' Hz';
     if (oscillator) oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
     updateVisualizations();
+    updatePresetButtonState(freq);
 }
 
 function enableEditing(element, slider, unit = '') {
@@ -145,6 +148,9 @@ function enableEditing(element, slider, unit = '') {
             element.textContent = value + unit;
             input.replaceWith(element);
             updateVisualizations();
+            if (slider === frequencySlider) {
+                updatePresetButtonState(value);
+            }
         });
 
         input.addEventListener('keydown', (event) => {
@@ -155,11 +161,23 @@ function enableEditing(element, slider, unit = '') {
     });
 }
 
+function updatePresetButtonState(frequency) {
+    presetButtons.forEach(button => {
+        const freq = parseFloat(button.getAttribute('data-freq'));
+        if (Math.abs(freq - frequency) < 1e-5) {
+            button.classList.add('active');
+        } else {
+            button.classList.remove('active');
+        }
+    });
+}
+
 frequencySlider.addEventListener('input', () => {
     const frequency = parseFloat(frequencySlider.value);
     frequencyValue.textContent = frequency.toFixed(0) + ' Hz';
     if (oscillator) oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
     updateVisualizations();
+    updatePresetButtonState(frequency);
 });
 
 dnaSlider.addEventListener('input', () => {
