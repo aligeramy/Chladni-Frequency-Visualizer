@@ -1,21 +1,44 @@
-let dnaHeight = 50; 
+// Design variables
+let dnaHeight = 30;
+let dnaLength = 150; // Length of DNA segments
 
+let colorYing = 'rgba(255, 182, 193, 1)';
+let colorYang = 'rgba(137, 207, 255, 1)';
+
+let waveColor = 'rgba(0, 0, 255, 0.2)';
+let intersectionColor = 'rgba(255, 0, 0, 1)';
+
+let leftBackboneWidth = 4;
+let rightBackboneWidth = 4;
+let baseWidth = 2;
+
+let leftBackboneColor = colorYing;
+let baseLeftColor = colorYing;
+
+let rightBackboneColor = colorYang;
+let baseRightColor = colorYang;
+
+// Get canvas and context
 const chladniCanvas = document.getElementById('chladniCanvas');
 const chladniCtx = chladniCanvas.getContext('2d');
 const dnaCanvas = document.getElementById('dnaCanvas');
 const dnaCtx = dnaCanvas.getContext('2d');
 
+// Get sliders and buttons
 const frequencySlider = document.getElementById('frequencySlider');
-const dnaSlider = document.getElementById('dnaSlider');
+const dnaHeigthSlider = document.getElementById('dnaHeigthSlider');
 const amplitudeSlider = document.getElementById('amplitudeSlider');
 const dampingSlider = document.getElementById('dampingSlider');
+const dnaLengthSlider = document.getElementById('dnaLengthSlider');
 const playButton = document.getElementById('playButton');
 const presetButtons = document.querySelectorAll('.preset-button');
 
+// Get display elements
 const frequencyValue = document.getElementById('frequencyValue');
 const dnaHeightValue = document.getElementById('dnaHeightValue');
 const amplitudeValue = document.getElementById('amplitudeValue');
 const dampingValue = document.getElementById('dampingValue');
+const dnaLengthValue = document.getElementById('dnaLengthValue');
 
 let audioContext;
 let oscillator;
@@ -80,18 +103,59 @@ function drawDNA() {
     const amplitude = parseFloat(amplitudeSlider.value);
     const damping = parseFloat(dampingSlider.value);
 
+    const segmentLength = dnaLength; // Use the DNA length from the slider
+
     dnaCtx.clearRect(0, 0, dnaCanvas.width, dnaCanvas.height);
 
-    // Draw DNA double helix
+    // Draw left DNA backbone
     dnaCtx.beginPath();
+    dnaCtx.lineWidth = leftBackboneWidth;
+    dnaCtx.strokeStyle = leftBackboneColor;
     for (let x = 0; x < dnaCanvas.width; x += 5) {
-        const y1 = dnaCanvas.height / 2 + Math.sin(x * 0.1) * dnaHeight;
-        const y2 = dnaCanvas.height / 2 + Math.sin(x * 0.1 + Math.PI) * dnaHeight;
-        dnaCtx.moveTo(x, y1);
-        dnaCtx.lineTo(x, y2);
+        const y = dnaCanvas.height / 2 + Math.sin(x * (2 * Math.PI / segmentLength)) * dnaHeight;
+        if (x === 0) {
+            dnaCtx.moveTo(x, y);
+        } else {
+            dnaCtx.lineTo(x, y);
+        }
     }
-    dnaCtx.strokeStyle = '#86868b';
     dnaCtx.stroke();
+
+    // Draw right DNA backbone
+    dnaCtx.beginPath();
+    dnaCtx.lineWidth = rightBackboneWidth;
+    dnaCtx.strokeStyle = rightBackboneColor;
+    for (let x = 0; x < dnaCanvas.width; x += 5) {
+        const y = dnaCanvas.height / 2 + Math.sin(x * (2 * Math.PI / segmentLength) + Math.PI) * dnaHeight;
+        if (x === 0) {
+            dnaCtx.moveTo(x, y);
+        } else {
+            dnaCtx.lineTo(x, y);
+        }
+    }
+    dnaCtx.stroke();
+
+    // Draw DNA bases
+    for (let x = 0; x < dnaCanvas.width; x += 5) {
+        const y1 = dnaCanvas.height / 2 + Math.sin(x * (2 * Math.PI / segmentLength)) * dnaHeight;
+        const y2 = dnaCanvas.height / 2 + Math.sin(x * (2 * Math.PI / segmentLength) + Math.PI) * dnaHeight;
+
+        // Left base
+        dnaCtx.beginPath();
+        dnaCtx.lineWidth = baseWidth;
+        dnaCtx.strokeStyle = baseLeftColor;
+        dnaCtx.moveTo(x, y1);
+        dnaCtx.lineTo(x, (y1 + y2) / 2);
+        dnaCtx.stroke();
+
+        // Right base
+        dnaCtx.beginPath();
+        dnaCtx.lineWidth = baseWidth;
+        dnaCtx.strokeStyle = baseRightColor;
+        dnaCtx.moveTo(x, y2);
+        dnaCtx.lineTo(x, (y1 + y2) / 2);
+        dnaCtx.stroke();
+    }
 
     // Draw wave and intersection points with damping effect
     dnaCtx.beginPath();
@@ -104,14 +168,14 @@ function drawDNA() {
             dnaCtx.lineTo(x, y);
         }
 
-        const y1 = dnaCanvas.height / 2 + Math.sin(x * 0.1) * dnaHeight;
-        const y2 = dnaCanvas.height / 2 + Math.sin(x * 0.1 + Math.PI) * dnaHeight;
+        const y1 = dnaCanvas.height / 2 + Math.sin(x * (2 * Math.PI / segmentLength)) * dnaHeight;
+        const y2 = dnaCanvas.height / 2 + Math.sin(x * (2 * Math.PI / segmentLength) + Math.PI) * dnaHeight;
         if (y >= Math.min(y1, y2) && y <= Math.max(y1, y2)) {
-            dnaCtx.fillStyle = '#ff3b30';
+            dnaCtx.fillStyle = intersectionColor;
             dnaCtx.fillRect(x - 2, y - 2, 4, 4);
         }
     }
-    dnaCtx.strokeStyle = '#0071e3';
+    dnaCtx.strokeStyle = waveColor;
     dnaCtx.stroke();
 }
 
@@ -142,8 +206,8 @@ function enableEditing(element, slider, unit = '') {
             const value = parseFloat(input.value);
             slider.max = Math.max(slider.max, value); // Update slider max if needed
             slider.value = value;
-            if (slider === dnaSlider) {
-                dnaHeight = value; // Update dnaHeight if dnaSlider is changed
+            if (slider === dnaHeigthSlider) {
+                dnaHeight = value; // Update dnaHeight if dnaHeigthSlider is changed
             }
             element.textContent = value + unit;
             input.replaceWith(element);
@@ -174,14 +238,14 @@ function updatePresetButtonState(frequency) {
 
 frequencySlider.addEventListener('input', () => {
     const frequency = parseFloat(frequencySlider.value);
-    frequencyValue.textContent = frequency.toFixed(0) + ' Hz';
+    frequencyValue.textContent = frequency.toFixed(1) + ' Hz';
     if (oscillator) oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
     updateVisualizations();
     updatePresetButtonState(frequency);
 });
 
-dnaSlider.addEventListener('input', () => {
-    dnaHeight = parseFloat(dnaSlider.value);
+dnaHeigthSlider.addEventListener('input', () => {
+    dnaHeight = parseFloat(dnaHeigthSlider.value);
     dnaHeightValue.textContent = dnaHeight.toFixed(0);
     updateVisualizations();
 });
@@ -196,6 +260,12 @@ amplitudeSlider.addEventListener('input', () => {
 dampingSlider.addEventListener('input', () => {
     const damping = parseFloat(dampingSlider.value);
     dampingValue.textContent = damping.toFixed(3);
+    updateVisualizations();
+});
+
+dnaLengthSlider.addEventListener('input', () => {
+    dnaLength = parseFloat(dnaLengthSlider.value);
+    dnaLengthValue.textContent = dnaLength.toFixed(0);
     updateVisualizations();
 });
 
@@ -214,9 +284,10 @@ updateVisualizations();
 
 // Enable editing of displayed values
 enableEditing(frequencyValue, frequencySlider, ' Hz');
-enableEditing(dnaHeightValue, dnaSlider);
+enableEditing(dnaHeightValue, dnaHeigthSlider);
 enableEditing(amplitudeValue, amplitudeSlider);
 enableEditing(dampingValue, dampingSlider);
+enableEditing(dnaLengthValue, dnaLengthSlider);
 
 // Animation loop
 function animate() {
