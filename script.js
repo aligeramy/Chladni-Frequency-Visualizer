@@ -8,9 +8,8 @@ let colorYang = 'rgba(137, 207, 255, 1)';
 let waveColor = 'rgba(0, 0, 255, 0.2)';
 let intersectionColor = 'rgba(255, 0, 0, 1)';
 
-let backBoneWidth = 3;
-let baseWidth = 2;
-
+let backBoneWidth = 2;
+let baseWidth = 1;
 
 let leftBackboneWidth = backBoneWidth;
 let rightBackboneWidth = backBoneWidth;
@@ -75,11 +74,11 @@ function togglePlay() {
     if (isPlaying) {
         gainNode.gain.setValueAtTime(0, audioContext.currentTime);
         isPlaying = false;
-        playButton.textContent = 'Play Sound';
+        playButton.innerHTML = '<i class="fas fa-play"></i> Play Sound';
     } else {
         gainNode.gain.setValueAtTime(parseFloat(amplitudeSlider.value), audioContext.currentTime);
         isPlaying = true;
-        playButton.textContent = 'Pause Sound';
+        playButton.innerHTML = '<i class="fas fa-pause"></i> Pause Sound';
     }
 }
 

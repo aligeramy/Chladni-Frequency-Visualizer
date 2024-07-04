@@ -12,7 +12,7 @@ body {
     font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
     background-color: var(--background-color);
     margin: 0;
-    padding: 20px;
+    padding: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,6 +27,7 @@ body {
     box-shadow: 0 4px 20px rgba(0,0,0,0.05);
     max-width: 900px;
     width: 100%;
+    transform: scale(0.9)
 }
 
 h1 {
@@ -66,6 +67,9 @@ label {
     color: var(--text-color);
     margin-bottom: 10px;
     text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 input[type="range"] {
@@ -119,6 +123,9 @@ button {
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.2s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 button:hover {
@@ -150,6 +157,7 @@ button:active {
     justify-content: center;
     text-align: center;
     transition: background 300ms ease, border 600ms ease;
+    gap: 0px;
 }
 
 .preset-button:hover, .preset-button.active {
@@ -176,7 +184,6 @@ button:active {
     font-weight: 500;
 }
 
-
 .hr-flex {
     display: flex;
     flex-direction: column;
@@ -193,13 +200,17 @@ button:active {
 
 .f0 {
     flex: 1;
-
 }
 
 .f1 {
-flex: 2;
+    flex: 2;
 }
 
 .f2 {
     flex: 3;
+}
+
+
+i {
+    transform: scale(0.8);
 }
