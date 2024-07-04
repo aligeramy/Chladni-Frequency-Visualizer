@@ -1,10 +1,9 @@
+![Harmonic Resonance DNA Visualizer](https://github.com/aligeramy/chladni-pattern-visualizer/blob/main/preview.gif)
+
 # Chladni Frequency Visualizer
 
 This project is a Chladni Frequency Visualizer built with plain HTML/JavaScript. It demonstrates the relationship between sound frequencies and their visual (Chladni) patterns.
-
 _Note: This is purely for entertainment and visualization purposes. It is not based on scientific research or intended for scientific use._
-
-![Harmonic Resonance DNA Visualizer](https://github.com/aligeramy/chladni-pattern-visualizer/blob/main/preview.gif)
 
 ## Description
 
