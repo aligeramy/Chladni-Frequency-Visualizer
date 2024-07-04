@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Harmonic Resonance DNA Visualizer</title>
+    <title>Chladni Pattern Visualizer</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600&display=swap');
         
@@ -184,7 +184,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Harmonic Resonance DNA Visualizer</h1>
+        <h1>Chladni Pattern Visualizer</h1>
         <div class="visualization-container">
             <canvas id="chladniCanvas" width="400" height="400"></canvas>
             <canvas id="dnaCanvas" width="400" height="400"></canvas>
@@ -192,18 +192,18 @@
         <div class="controls">
             <div class="control-group">
                 <label for="frequencySlider">Frequency</label>
-                <input type="range" id="frequencySlider" min="20" max="2000" value="440">
+                <input type="range" id="frequencySlider" min="0" max="2000" value="440">
                 <div id="frequencyValue" class="value-display">440 Hz</div>
             </div>
             <div class="control-group">
-                <label for="dnaSlider">DNA height</label>
+                <label for="dnaSlider">DNA Height</label>
                 <input type="range" id="dnaSlider" min="0" max="200" value="50">
                 <div id="dnaHeightValue" class="value-display">50</div>
             </div>
             <div class="control-group">
                 <label for="amplitudeSlider">Amplitude</label>
-                <input type="range" id="amplitudeSlider" min="0" max="1" step="0.01" value="0.5">
-                <div id="amplitudeValue" class="value-display">0.50</div>
+                <input type="range" id="amplitudeSlider" min="0" max="1" step="0.001" value="0.5">
+                <div id="amplitudeValue" class="value-display">0.500</div>
             </div>
             <div class="control-group">
                 <label for="dampingSlider">Damping</label>
@@ -211,7 +211,7 @@
                 <div id="dampingValue" class="value-display">0.020</div>
             </div>
         </div>
-        <button id="playButton" class="main-button">Play</button>
+        <button id="playButton" class="main-button">Play Sound</button>
         <div class="preset-buttons">
             <button class="preset-button" data-freq="174">
                 <span class="frequency">174 Hz</span>
@@ -301,11 +301,11 @@
             if (isPlaying) {
                 gainNode.gain.setValueAtTime(0, audioContext.currentTime);
                 isPlaying = false;
-                playButton.textContent = 'Play';
+                playButton.textContent = 'Play Sound';
             } else {
                 gainNode.gain.setValueAtTime(parseFloat(amplitudeSlider.value), audioContext.currentTime);
                 isPlaying = true;
-                playButton.textContent = 'Pause';
+                playButton.textContent = 'Pause Sound';
             }
         }
 
@@ -397,7 +397,7 @@
 
         amplitudeSlider.addEventListener('input', () => {
             const amplitude = parseFloat(amplitudeSlider.value);
-            amplitudeValue.textContent = amplitude.toFixed(2);
+            amplitudeValue.textContent = amplitude.toFixed(3);
             if (gainNode && isPlaying) gainNode.gain.setValueAtTime(amplitude, audioContext.currentTime);
             updateVisualizations();
         });
@@ -430,3 +430,4 @@
     </script>
 </body>
 </html>
+
